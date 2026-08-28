@@ -14,7 +14,7 @@ const emocionesDB = [
   //exterior
   { nombre: "Apenado", capa: "exterior", categoria: "miedo" },
   { nombre: "Devastado", capa: "exterior", categoria: "miedo" },
-  { nombre: "Rudiculizado", capa: "exterior", categoria: "miedo" },
+  { nombre: "Ridiculizado", capa: "exterior", categoria: "miedo" },
   { nombre: "Irrespetado", capa: "exterior", categoria: "miedo" },
   { nombre: "Perturbado", capa: "exterior", categoria: "miedo" },
   { nombre: "Inadecuado", capa: "exterior", categoria: "miedo" },
