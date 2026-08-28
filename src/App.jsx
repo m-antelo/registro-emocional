@@ -200,9 +200,24 @@ export default function App() {
   const [mostrarAyuda, setMostrarAyuda] = useState(false);
   const [opcionesFase1, setOpcionesFase1] = useState([]);
   const [consejoActual, setConsejoActual] = useState("");
-  
+
   // Estado para controlar el tema (arranca en oscuro por defecto)
   const [temaClaro, setTemaClaro] = useState(false);
+
+  // Al cargar (F5), solo revisamos qué había guardado
+  useEffect(() => {
+    const temaGuardado = localStorage.getItem('preferenciaTema');
+    if (temaGuardado === 'claro') {
+      setTemaClaro(true);
+    }
+  }, []); // El array vacío asegura que esto pase solo al cargar
+
+  // (Acá abajo dejá tu useEffect del historial que ya tenías)
+  useEffect(() => {
+    const guardado = JSON.parse(localStorage.getItem('historialEmocional')) || [];
+    setHistorial(guardado);
+    barajarEmociones();
+  }, []);
 
   useEffect(() => {
     const guardado = JSON.parse(localStorage.getItem('historialEmocional')) || [];
@@ -318,7 +333,11 @@ export default function App() {
       {/* Botón Toggle de Tema */}
       <div className="absolute top-4 right-4 sm:top-8 sm:right-8">
         <button 
-          onClick={() => setTemaClaro(!temaClaro)}
+          onClick={() => {
+            const nuevoTema = !temaClaro;
+            setTemaClaro(nuevoTema);
+            localStorage.setItem('preferenciaTema', nuevoTema ? 'claro' : 'oscuro');
+          }}
           className={`p-3 rounded-full shadow-md transition-all duration-300 hover:scale-110 ${temaClaro ? 'bg-slate-100/80 text-yellow-500 border border-white' : 'bg-slate-800 text-indigo-300 border border-slate-700'}`}
           title="Cambiar tema"
         >
