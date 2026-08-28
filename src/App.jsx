@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// 1. Estructura de Datos (Rueda de Plutchik simplificada)
+// --- BASE DE DATOS DE EMOCIONES COMPLETA ---
 const emocionesDB = [
   // Miedo
   { nombre: "Miedo", capa: "centro", categoria: "miedo" },
@@ -12,7 +12,7 @@ const emocionesDB = [
   { nombre: "Asustado", capa: "medio", categoria: "miedo" },
   { nombre: "Apenado", capa: "exterior", categoria: "miedo" },
   { nombre: "Devastado", capa: "exterior", categoria: "miedo" },
-  { nombre: "Ridiculizado", capa: "exterior", categoria: "miedo" }, // Corregido el tipeo
+  { nombre: "Ridiculizado", capa: "exterior", categoria: "miedo" },
   { nombre: "Irrespetado", capa: "exterior", categoria: "miedo" },
   { nombre: "Perturbado", capa: "exterior", categoria: "miedo" },
   { nombre: "Inadecuado", capa: "exterior", categoria: "miedo" },
@@ -123,8 +123,7 @@ const emocionesDB = [
   { nombre: "Eufórico", capa: "exterior", categoria: "sorpresa" }
 ];
 
-// Base de datos de consejos dinámicos por categoría
-// Base de datos de consejos dinámicos por categoría (Expandida)
+// --- BASE DE DATOS DE CONSEJOS COMPLETA ---
 const consejosDB = {
   miedo: [
     "Intentá la respiración 4-7-8: Inhalá en 4 segundos, retené 7, exhalá en 8. Ayuda a bajar el ritmo cardíaco.",
@@ -181,8 +180,7 @@ const consejosDB = {
   ]
 };
 
-
-// Función para mezclar aleatoriamente el array (como un mazo de cartas)
+// Función para mezclar cartas (12 opciones de la periferia)
 const mezclarArray = (array) => {
   let mezclado = [...array];
   for (let i = mezclado.length - 1; i > 0; i--) {
@@ -193,6 +191,7 @@ const mezclarArray = (array) => {
 };
 
 export default function App() {
+  // Estados de la app
   const [fase, setFase] = useState(1);
   const [seleccionadas, setSeleccionadas] = useState([]);
   const [categoriasGanadoras, setCategoriasGanadoras] = useState([]);
@@ -201,8 +200,10 @@ export default function App() {
   const [mostrarAyuda, setMostrarAyuda] = useState(false);
   const [opcionesFase1, setOpcionesFase1] = useState([]);
   const [consejoActual, setConsejoActual] = useState("");
+  
+  // Estado para controlar el tema (arranca en oscuro por defecto)
+  const [temaClaro, setTemaClaro] = useState(false);
 
-  // Cargar historial al iniciar y barajar la primera vez
   useEffect(() => {
     const guardado = JSON.parse(localStorage.getItem('historialEmocional')) || [];
     setHistorial(guardado);
@@ -225,12 +226,8 @@ export default function App() {
 
   const avanzarFase2 = () => {
     if (seleccionadas.length === 0) return;
-    
     const conteo = {};
-    seleccionadas.forEach(e => {
-      conteo[e.categoria] = (conteo[e.categoria] || 0) + 1;
-    });
-
+    seleccionadas.forEach(e => { conteo[e.categoria] = (conteo[e.categoria] || 0) + 1; });
     let maxVotos = 0;
     let ganadoras = [];
     for (const cat in conteo) {
@@ -241,7 +238,6 @@ export default function App() {
         ganadoras.push(cat);
       }
     }
-
     setCategoriasGanadoras(ganadoras);
     setSeleccionadas([]);
     setFase(2);
@@ -249,12 +245,8 @@ export default function App() {
 
   const finalizarRegistro = () => {
     if (seleccionadas.length === 0) return;
-
     const conteo = {};
-    seleccionadas.forEach(e => {
-      conteo[e.categoria] = (conteo[e.categoria] || 0) + 1;
-    });
-
+    seleccionadas.forEach(e => { conteo[e.categoria] = (conteo[e.categoria] || 0) + 1; });
     let maxVotos = 0;
     let categoriaFinal = "";
     for (const cat in conteo) {
@@ -263,9 +255,9 @@ export default function App() {
         categoriaFinal = cat;
       }
     }
-
     const emocionCentral = emocionesDB.find(e => e.capa === "centro" && e.categoria === categoriaFinal);
-
+    
+    // Sortear el consejo
     if (consejosDB[categoriaFinal]) {
       const listaConsejos = consejosDB[categoriaFinal];
       const consejoAleatorio = listaConsejos[Math.floor(Math.random() * listaConsejos.length)];
@@ -274,11 +266,9 @@ export default function App() {
     
     setVeredicto(emocionCentral);
     setFase(3);
-
-    const nuevoRegistro = {
-      fecha: new Date().toLocaleString(),
-      emocion: emocionCentral.nombre
-    };
+    
+    // Guardar historial
+    const nuevoRegistro = { fecha: new Date().toLocaleString(), emocion: emocionCentral.nombre };
     const nuevoHistorial = [nuevoRegistro, ...historial];
     localStorage.setItem('historialEmocional', JSON.stringify(nuevoHistorial));
     setHistorial(nuevoHistorial);
@@ -289,57 +279,76 @@ export default function App() {
     setSeleccionadas([]);
     setVeredicto(null);
     setCategoriasGanadoras([]);
-    barajarEmociones();
     setConsejoActual("");
+    barajarEmociones();
   };
 
   const emocionesFase2 = emocionesDB.filter(e => e.capa === "medio" && categoriasGanadoras.includes(e.categoria));
 
-  // --- VARIABLES DE ESTILO UNIFICADAS (Tema Oscuro/Calmo) ---
+  // --- VARIABLES DE ESTILO DINÁMICAS (Responden al tema) ---
+  const fondoGeneral = temaClaro 
+    ? "bg-gradient-to-br from-teal-200 via-purple-200 to-orange-200 text-slate-800" 
+    : "bg-slate-900 text-slate-200";
+    
+  const fondoTarjeta = temaClaro
+    ? "bg-slate-100/50 backdrop-blur-md border-white/40 shadow-xl"
+    : "bg-slate-800 border-slate-700 shadow-2xl";
+
   const claseBotonEmocion = (emo) => {
     const estaSeleccionada = seleccionadas.find(e => e.nombre === emo.nombre);
     const base = "px-5 py-2.5 rounded-full border transition-all duration-300 shadow-sm font-medium hover:-translate-y-1";
     
     if (estaSeleccionada) {
-      // Estilo activo: Índigo suave con resplandor
-      return `${base} bg-indigo-500 text-white border-indigo-400 scale-105 shadow-lg ring-2 ring-indigo-400 ring-offset-2 ring-offset-slate-800`;
+      return temaClaro
+        ? `${base} bg-purple-500 text-white border-purple-400 scale-105 shadow-lg ring-2 ring-purple-300 ring-offset-2 ring-offset-slate-100`
+        : `${base} bg-indigo-500 text-white border-indigo-400 scale-105 shadow-lg ring-2 ring-indigo-400 ring-offset-2 ring-offset-slate-800`;
     }
-    // Estilo inactivo: Fondo oscuro, borde sutil
-    return `${base} bg-slate-700 text-slate-200 border-slate-600 hover:bg-slate-600 hover:border-slate-400`;
+    return temaClaro
+      ? `${base} bg-white/40 text-slate-700 border-white/60 hover:bg-white/80 hover:border-purple-300`
+      : `${base} bg-slate-700 text-slate-200 border-slate-600 hover:bg-slate-600 hover:border-slate-400`;
   };
 
-  const claseBotonAccion = "px-10 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-xl text-lg font-semibold disabled:opacity-50 hover:shadow-lg hover:scale-105 transition-all duration-300";
+  const claseBotonAccion = temaClaro
+    ? "px-10 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl text-lg font-semibold disabled:opacity-50 hover:shadow-lg hover:scale-105 transition-all duration-300"
+    : "px-10 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-xl text-lg font-semibold disabled:opacity-50 hover:shadow-lg hover:scale-105 transition-all duration-300";
 
   return (
-    // Fondo general oscuro y relajante (Pizarra)
-    <div className="min-h-screen bg-slate-900 text-slate-200 p-4 sm:p-8 font-sans flex flex-col items-center">
-      <div className="max-w-2xl w-full">
+    <div className={`min-h-screen p-4 sm:p-8 font-sans flex flex-col items-center transition-colors duration-500 ${fondoGeneral}`}>
+      
+      {/* Botón Toggle de Tema */}
+      <div className="absolute top-4 right-4 sm:top-8 sm:right-8">
+        <button 
+          onClick={() => setTemaClaro(!temaClaro)}
+          className={`p-3 rounded-full shadow-md transition-all duration-300 hover:scale-110 ${temaClaro ? 'bg-slate-100/80 text-yellow-500 border border-white' : 'bg-slate-800 text-indigo-300 border border-slate-700'}`}
+          title="Cambiar tema"
+        >
+          {temaClaro ? "☀️" : "🌙"}
+        </button>
+      </div>
+
+      <div className="max-w-2xl w-full mt-4">
         
-        <h1 className="text-3xl font-bold mb-2 text-center text-slate-100">Registro Emocional</h1>
+        <h1 className={`text-3xl font-bold mb-2 text-center transition-colors duration-300 ${temaClaro ? 'text-slate-800' : 'text-slate-100'}`}>Registro Emocional</h1>
         
         <div className="flex justify-center mb-8">
           <button 
             onClick={() => setMostrarAyuda(true)}
-            className="text-sm text-slate-400 underline hover:text-slate-200 transition-colors"
+            className={`text-sm underline transition-colors duration-300 ${temaClaro ? 'text-slate-600 hover:text-purple-700' : 'text-slate-400 hover:text-slate-200'}`}
           >
             ¿Cómo funciona el embudo?
           </button>
         </div>
 
         {/* CONTENEDOR PRINCIPAL */}
-        <div className="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 mb-8">
+        <div className={`p-8 rounded-2xl border mb-8 transition-all duration-500 ${fondoTarjeta}`}>
           
           {fase === 1 && (
             <div className="animate-fade-in text-center">
-              <p className="mb-8 text-slate-300 text-lg">¿Qué sensaciones identificás en este momento?</p>
+              <p className={`mb-8 text-lg transition-colors ${temaClaro ? 'text-slate-700' : 'text-slate-300'}`}>¿Qué sensaciones identificás en este momento?</p>
               
               <div className="flex flex-wrap gap-4 justify-center mb-8">
                 {opcionesFase1.map(emo => (
-                  <button
-                    key={emo.nombre}
-                    onClick={() => toggleEmocion(emo)}
-                    className={claseBotonEmocion(emo)}
-                  >
+                  <button key={emo.nombre} onClick={() => toggleEmocion(emo)} className={claseBotonEmocion(emo)}>
                     {emo.nombre}
                   </button>
                 ))}
@@ -348,18 +357,14 @@ export default function App() {
               <div className="flex justify-center mb-8">
                 <button 
                   onClick={barajarEmociones}
-                  className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors px-4 py-2 rounded-lg hover:bg-slate-700/50"
+                  className={`flex items-center gap-2 text-sm font-medium transition-colors px-4 py-2 rounded-lg ${temaClaro ? 'text-slate-600 hover:text-slate-900 hover:bg-white/40' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'}`}
                 >
                   ↻ No siento ninguna de estas (Ver otras)
                 </button>
               </div>
 
               <div className="flex justify-center">
-                <button 
-                  onClick={avanzarFase2}
-                  disabled={seleccionadas.length === 0}
-                  className={claseBotonAccion}
-                >
+                <button onClick={avanzarFase2} disabled={seleccionadas.length === 0} className={claseBotonAccion}>
                   Siguiente paso
                 </button>
               </div>
@@ -368,26 +373,18 @@ export default function App() {
 
           {fase === 2 && (
             <div className="animate-fade-in text-center">
-              <p className="mb-8 text-slate-300 text-lg">Profundicemos un poco más. ¿Cuáles resuenan más con tu interior?</p>
+              <p className={`mb-8 text-lg transition-colors ${temaClaro ? 'text-slate-700' : 'text-slate-300'}`}>Profundicemos un poco más. ¿Cuáles resuenan más con tu interior?</p>
               
               <div className="flex flex-wrap gap-4 justify-center mb-10">
                 {emocionesFase2.map(emo => (
-                  <button
-                    key={emo.nombre}
-                    onClick={() => toggleEmocion(emo)}
-                    className={claseBotonEmocion(emo)}
-                  >
+                  <button key={emo.nombre} onClick={() => toggleEmocion(emo)} className={claseBotonEmocion(emo)}>
                     {emo.nombre}
                   </button>
                 ))}
               </div>
 
               <div className="flex justify-center">
-                <button 
-                  onClick={finalizarRegistro}
-                  disabled={seleccionadas.length === 0}
-                  className={claseBotonAccion}
-                >
+                <button onClick={finalizarRegistro} disabled={seleccionadas.length === 0} className={claseBotonAccion}>
                   Descubrir Emoción
                 </button>
               </div>
@@ -396,28 +393,25 @@ export default function App() {
 
           {fase === 3 && veredicto && (
             <div className="text-center animate-fade-in py-6">
-              <p className="text-slate-400 mb-4 text-lg">Tu emoción predominante en este momento es:</p>
-              <h2 className="text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-8 pb-2">
+              <p className={`mb-4 text-lg transition-colors ${temaClaro ? 'text-slate-600' : 'text-slate-400'}`}>Tu emoción predominante en este momento es:</p>
+              <h2 className="text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-500 mb-8 pb-2">
                 {veredicto.nombre}
               </h2>
               
               {/* Tarjeta del consejo dinámico */}
               {consejoActual && (
-                <div className="max-w-md mx-auto bg-indigo-900/20 border border-indigo-500/30 p-6 rounded-2xl mb-10 text-left shadow-inner">
+                <div className={`max-w-md mx-auto p-6 rounded-2xl mb-10 text-left shadow-inner border transition-colors ${temaClaro ? 'bg-white/50 border-purple-200/60' : 'bg-indigo-900/20 border-indigo-500/30'}`}>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-indigo-400 text-xl">💡</span>
-                    <h4 className="font-semibold text-indigo-300">Un consejo para este momento:</h4>
+                    <span className="text-xl">💡</span>
+                    <h4 className={`font-semibold ${temaClaro ? 'text-purple-700' : 'text-indigo-300'}`}>Un consejo para este momento:</h4>
                   </div>
-                  <p className="text-slate-300 leading-relaxed text-sm">
+                  <p className={`leading-relaxed text-sm ${temaClaro ? 'text-slate-700' : 'text-slate-300'}`}>
                     {consejoActual}
                   </p>
                 </div>
               )}
 
-              <button 
-                onClick={reiniciar}
-                className="px-8 py-3 bg-slate-700 border border-slate-600 text-white rounded-xl text-lg font-semibold hover:bg-slate-600 hover:scale-105 transition-all duration-300 shadow-lg"
-              >
+              <button onClick={reiniciar} className={`px-8 py-3 border rounded-xl text-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg ${temaClaro ? 'bg-white/80 text-slate-700 border-white hover:bg-white' : 'bg-slate-700 border-slate-600 text-white hover:bg-slate-600'}`}>
                 Registrar de nuevo
               </button>
             </div>
@@ -425,53 +419,44 @@ export default function App() {
         </div>
 
         {/* HISTORIAL */}
-        <div className="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
-          <h3 className="text-xl font-semibold mb-6 text-slate-200">Tu Historial</h3>
+        <div className={`p-6 rounded-2xl border transition-all duration-500 ${fondoTarjeta}`}>
+          <h3 className={`text-xl font-semibold mb-6 transition-colors ${temaClaro ? 'text-slate-800' : 'text-slate-200'}`}>Tu Historial</h3>
           {historial.length === 0 ? (
-            <p className="text-slate-500 italic text-center py-4">Aún no hay registros guardados.</p>
+            <p className={`italic text-center py-4 ${temaClaro ? 'text-slate-500' : 'text-slate-500'}`}>Aún no hay registros guardados.</p>
           ) : (
             <ul className="space-y-4">
               {historial.map((reg, index) => (
-                <li key={index} className="flex justify-between items-center border-b border-slate-700 pb-3 text-sm">
-                  <span className="text-slate-400">{reg.fecha}</span>
-                  <span className="font-semibold text-slate-200 text-base">{reg.emocion}</span>
+                <li key={index} className={`flex justify-between items-center border-b pb-3 text-sm ${temaClaro ? 'border-purple-200/50' : 'border-slate-700'}`}>
+                  <span className={temaClaro ? 'text-slate-500' : 'text-slate-400'}>{reg.fecha}</span>
+                  <span className={`font-semibold text-base ${temaClaro ? 'text-slate-800' : 'text-slate-200'}`}>{reg.emocion}</span>
                 </li>
               ))}
             </ul>
           )}
         </div>
-
       </div>
 
       {/* VENTANA MODAL DE INSTRUCCIONES */}
       {mostrarAyuda && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl relative border border-slate-600">
-            <button 
-              onClick={() => setMostrarAyuda(false)}
-              className="absolute top-4 right-5 text-slate-400 hover:text-white font-bold text-2xl transition-colors"
-            >
-              ×
-            </button>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className={`rounded-2xl p-8 max-w-md w-full shadow-2xl relative border ${temaClaro ? 'bg-slate-50 border-white' : 'bg-slate-800 border-slate-600'}`}>
+            <button onClick={() => setMostrarAyuda(false)} className="absolute top-4 right-5 text-gray-400 hover:text-gray-800 font-bold text-2xl transition-colors">×</button>
             
-            <h3 className="text-xl font-bold mb-6 text-slate-100">¿Cómo usar el registro?</h3>
+            <h3 className={`text-xl font-bold mb-6 ${temaClaro ? 'text-slate-800' : 'text-slate-100'}`}>¿Cómo usar el registro?</h3>
             
-            <div className="space-y-4 text-slate-300 text-sm">
+            <div className={`space-y-4 text-sm ${temaClaro ? 'text-slate-600' : 'text-slate-300'}`}>
               <p>
-                <strong className="text-indigo-400">1. Superficie:</strong> Elegí las palabras con las que te identifiques. No lo pienses demasiado, dejate llevar. Podés barajar las opciones si ninguna encaja.
+                <strong className={temaClaro ? 'text-purple-600' : 'text-indigo-400'}>1. Superficie:</strong> Elegí las palabras con las que te identifiques. No lo pienses demasiado, dejate llevar. Podés barajar las opciones si ninguna encaja.
               </p>
               <p>
-                <strong className="text-indigo-400">2. Profundidad:</strong> Según tus elecciones, el sistema filtrará sensaciones más específicas. Seleccioná las que más resuenen.
+                <strong className={temaClaro ? 'text-purple-600' : 'text-indigo-400'}>2. Profundidad:</strong> Según tus elecciones, el sistema filtrará sensaciones más específicas. Seleccioná las que más resuenen.
               </p>
               <p>
-                <strong className="text-indigo-400">3. Núcleo:</strong> Finalmente, descubriremos tu emoción central para que puedas guardarla en tu historial.
+                <strong className={temaClaro ? 'text-purple-600' : 'text-indigo-400'}>3. Núcleo:</strong> Finalmente, descubriremos tu emoción central para que puedas guardarla en tu historial.
               </p>
             </div>
 
-            <button 
-              onClick={() => setMostrarAyuda(false)}
-              className="mt-8 w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition-colors font-medium shadow-md"
-            >
+            <button onClick={() => setMostrarAyuda(false)} className={`mt-8 w-full py-3 text-white rounded-lg transition-colors font-medium shadow-md ${temaClaro ? 'bg-purple-500 hover:bg-purple-600' : 'bg-indigo-600 hover:bg-indigo-500'}`}>
               Entendido
             </button>
           </div>
