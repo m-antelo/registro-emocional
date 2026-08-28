@@ -453,7 +453,23 @@ export default function App() {
             </ul>
           )}
         </div>
-      </div>
+        {/* BOTÓN FLOTANTE DE SUGERENCIAS */}
+        <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfP7eura5hSTHudehLmAToAADDP2RbozZXcg6vgPDdDBL6oIg/viewform?usp=header"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full shadow-lg transition-all duration-300 hover:scale-105 font-medium text-sm ${
+          temaClaro 
+            ? 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-50 shadow-purple-200/50' 
+            : 'bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 shadow-black/40'
+        }`}
+        title="Dejar una sugerencia"
+        >
+        <span>💬</span>
+        <span className="hidden sm:inline">Sugerencias</span>
+      </a>
+
+      </div> {/* <-- Este div cierra el max-w-2xl que envuelve todo */}
 
       {/* VENTANA MODAL DE INSTRUCCIONES */}
       {mostrarAyuda && (
