@@ -123,6 +123,46 @@ const emocionesDB = [
   { nombre: "Eufórico", capa: "exterior", categoria: "sorpresa" }
 ];
 
+// Base de datos de consejos dinámicos por categoría
+const consejosDB = {
+  miedo: [
+    "Intentá la respiración 4-7-8: Inhalá en 4 segundos, retené 7, exhalá en 8. Ayuda a bajar el ritmo cardíaco.",
+    "Buscá un 'ancla' en el presente: nombrá 3 cosas que puedas ver, 2 que puedas tocar y 1 que puedas escuchar.",
+    "Anotá qué es lo peor que podría pasar y al lado, qué harías en ese caso. Darle forma al miedo le quita poder.",
+    "Recordá que el miedo es solo tu mente intentando protegerte. Agradecele, pero recordale que estás a salvo ahora."
+  ],
+  ira: [
+    "Si sentís que explotás, alejate físicamente de la situación por 10 minutos. Caminar un poco ayuda a descargar.",
+    "Escribí todo lo que te da bronca en un papel sin filtro. Cuando termines, rompelo y tiralo.",
+    "Lavate la cara con agua bien fría o agarrá un cubito de hielo. El cambio de temperatura resetea el sistema nervioso.",
+    "Canalizá esa energía: ordená un cajón, hacé unas flexiones o escuchá música fuerte por un rato."
+  ],
+  tristeza: [
+    "Llorar está perfecto. Es el mecanismo natural del cuerpo para liberar las hormonas del estrés. Date permiso.",
+    "No te exijas estar bien hoy. Tratáte con la misma paciencia con la que tratarías a un amigo que está triste.",
+    "Hacé algo mínimo que te reconforte: preparate un té rico, abrigate bien o mirá tu película confort favorita.",
+    "Escribir lo que sentís ayuda a sacarlo del cuerpo. A veces, la tristeza solo necesita ser escuchada."
+  ],
+  alegria: [
+    "¡Qué bueno! Frená un segundo y registrá en qué parte del cuerpo sentís esta alegría. Guardá esa sensación.",
+    "Compartí esto con alguien. Mandale un mensaje a esa persona que sabés que se va a poner feliz por vos.",
+    "Usá esta energía a tu favor: es un gran momento para arrancar ese proyecto o tarea que venías pateando.",
+    "No sientas culpa por estar bien. Te merecés disfrutar este momento al cien por ciento."
+  ],
+  disgusto: [
+    "El disgusto suele marcar un límite que fue cruzado. Identificá cuál fue ese límite para poder comunicarlo después.",
+    "Tomá distancia de lo que te genera rechazo. Está bien proteger tu espacio y tu energía.",
+    "Si es una situación inevitable, intentá enfocarte en qué podés controlar vos y soltá lo que hace el otro.",
+    "Escribí por qué te sentís así. Ponerlo en palabras ayuda a entender si es un tema de valores o de incomodidad."
+  ],
+  sorpresa: [
+    "Date un momento para procesar la nueva información. No tenés que reaccionar ni tomar decisiones ya mismo.",
+    "Respirá hondo. La sorpresa descoloca, dale a tu cerebro unos minutos para acomodarse a la nueva realidad.",
+    "Si la sorpresa desbarató tus planes, enfocate en recalcular el próximo paso, no en mirar el mapa entero."
+  ]
+};
+
+
 // Función para mezclar aleatoriamente el array (como un mazo de cartas)
 const mezclarArray = (array) => {
   let mezclado = [...array];
@@ -141,6 +181,7 @@ export default function App() {
   const [historial, setHistorial] = useState([]);
   const [mostrarAyuda, setMostrarAyuda] = useState(false);
   const [opcionesFase1, setOpcionesFase1] = useState([]);
+  const [consejoActual, setConsejoActual] = useState("");
 
   // Cargar historial al iniciar y barajar la primera vez
   useEffect(() => {
@@ -205,6 +246,12 @@ export default function App() {
     }
 
     const emocionCentral = emocionesDB.find(e => e.capa === "centro" && e.categoria === categoriaFinal);
+
+    if (consejosDB[categoriaFinal]) {
+      const listaConsejos = consejosDB[categoriaFinal];
+      const consejoAleatorio = listaConsejos[Math.floor(Math.random() * listaConsejos.length)];
+      setConsejoActual(consejoAleatorio);
+    }
     
     setVeredicto(emocionCentral);
     setFase(3);
@@ -224,6 +271,7 @@ export default function App() {
     setVeredicto(null);
     setCategoriasGanadoras([]);
     barajarEmociones();
+    setConsejoActual("");
   };
 
   const emocionesFase2 = emocionesDB.filter(e => e.capa === "medio" && categoriasGanadoras.includes(e.categoria));
@@ -330,9 +378,23 @@ export default function App() {
           {fase === 3 && veredicto && (
             <div className="text-center animate-fade-in py-6">
               <p className="text-slate-400 mb-4 text-lg">Tu emoción predominante en este momento es:</p>
-              <h2 className="text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-10 pb-2">
+              <h2 className="text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-8 pb-2">
                 {veredicto.nombre}
               </h2>
+              
+              {/* Tarjeta del consejo dinámico */}
+              {consejoActual && (
+                <div className="max-w-md mx-auto bg-indigo-900/20 border border-indigo-500/30 p-6 rounded-2xl mb-10 text-left shadow-inner">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-indigo-400 text-xl">💡</span>
+                    <h4 className="font-semibold text-indigo-300">Un consejo para este momento:</h4>
+                  </div>
+                  <p className="text-slate-300 leading-relaxed text-sm">
+                    {consejoActual}
+                  </p>
+                </div>
+              )}
+
               <button 
                 onClick={reiniciar}
                 className="px-8 py-3 bg-slate-700 border border-slate-600 text-white rounded-xl text-lg font-semibold hover:bg-slate-600 hover:scale-105 transition-all duration-300 shadow-lg"
