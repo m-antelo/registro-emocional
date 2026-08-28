@@ -136,6 +136,15 @@ const emocionesDB = [
   { nombre: "Eufórico", capa: "exterior", categoria: "sorpresa" },
 ];
 
+const mezclarArray = (array) => {
+  let mezclado = [...array];
+  for (let i = mezclado.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [mezclado[i], mezclado[j]] = [mezclado[j], mezclado[i]];
+  }
+  return mezclado;
+};
+
 export default function App() {
   const [fase, setFase] = useState(1);
   const [seleccionadas, setSeleccionadas] = useState([]);
@@ -143,11 +152,19 @@ export default function App() {
   const [veredicto, setVeredicto] = useState(null);
   const [historial, setHistorial] = useState([]);
   const [mostrarAyuda, setMostrarAyuda] = useState(false);
+  const [opcionesFase1, setOpcionesFase1] = useState([]);
   // Cargar historial al iniciar
   useEffect(() => {
     const guardado = JSON.parse(localStorage.getItem('historialEmocional')) || [];
     setHistorial(guardado);
+    barajarEmociones(); // Llamamos a la función acá
   }, []);
+  
+  const barajarEmociones = () => {
+    const exteriores = emocionesDB.filter(e => e.capa === "exterior");
+    const mezcladas = mezclarArray(exteriores);
+    setOpcionesFase1(mezcladas.slice(0, 12));
+  };
 
   const toggleEmocion = (emocion) => {
     if (seleccionadas.find(e => e.nombre === emocion.nombre)) {
@@ -229,7 +246,7 @@ export default function App() {
     : emocionesDB.filter(e => e.capa === "medio" && categoriasGanadoras.includes(e.categoria));
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 p-8 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 text-gray-800 p-8 font-sans">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-2 text-center">Registro Emocional</h1>
         
@@ -247,30 +264,46 @@ export default function App() {
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-8">
           
           {fase === 1 && (
-            <div>
-              <p className="mb-4 text-gray-600 text-center">¿Qué sensaciones identificás en este momento? (Podés elegir varias)</p>
+            <div className="animate-fade-in">
+              <p className="mb-6 text-gray-600 text-center text-lg">¿Qué sensaciones identificás en este momento?</p>
+              
+              {/* Contenedor de las 12 cartas */}
               <div className="flex flex-wrap gap-3 justify-center mb-6">
-                {emocionesMostrar.map(emo => (
+                {opcionesFase1.map(emo => (
                   <button
                     key={emo.nombre}
                     onClick={() => toggleEmocion(emo)}
-                    className={`px-4 py-2 rounded-full border transition-colors ${
+                    className={`px-5 py-2.5 rounded-full border transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 ${
                       seleccionadas.find(e => e.nombre === emo.nombre)
-                        ? 'bg-gray-800 text-white border-gray-800'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                        ? 'bg-gray-800 text-white border-gray-800 scale-105 ring-2 ring-gray-400 ring-offset-2'
+                        : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400'
                     }`}
                   >
                     {emo.nombre}
                   </button>
                 ))}
               </div>
-              <button 
-                onClick={avanzarFase2}
-                disabled={seleccionadas.length === 0}
-                className="w-full py-3 bg-gray-900 text-white rounded-lg disabled:opacity-50"
-              >
-                Siguiente
-              </button>
+
+              {/* Botón para cambiar las palabras */}
+              <div className="flex justify-center mb-8">
+                <button 
+                  onClick={barajarEmociones}
+                  className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-gray-700 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100"
+                >
+                  ↻ No siento ninguna de estas (Ver otras)
+                </button>
+              </div>
+
+              {/* Botón principal más dinámico */}
+              <div className="flex justify-center">
+                <button 
+                  onClick={avanzarFase2}
+                  disabled={seleccionadas.length === 0}
+                  className="px-10 py-4 bg-gradient-to-r from-gray-900 to-gray-700 text-white rounded-xl text-lg font-semibold disabled:opacity-50 hover:shadow-xl hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+                >
+                  Siguiente paso
+                </button>
+              </div>
             </div>
           )}
 
