@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
-// 1. Estructura de Datos (Rueda de Plutchik simplificada para el embudo)
+// 1. Estructura de Datos (Rueda de Plutchik simplificada)
 const emocionesDB = [
   // Miedo
   { nombre: "Miedo", capa: "centro", categoria: "miedo" },
-  //medio
   { nombre: "Herido", capa: "medio", categoria: "miedo" },
   { nombre: "Humillado", capa: "medio", categoria: "miedo" },
   { nombre: "Rechazado", capa: "medio", categoria: "miedo" },
   { nombre: "Sumiso", capa: "medio", categoria: "miedo" },
   { nombre: "Inseguro", capa: "medio", categoria: "miedo" },
   { nombre: "Asustado", capa: "medio", categoria: "miedo" },
-  //exterior
   { nombre: "Apenado", capa: "exterior", categoria: "miedo" },
   { nombre: "Devastado", capa: "exterior", categoria: "miedo" },
-  { nombre: "Rdiculizado", capa: "exterior", categoria: "miedo" },
+  { nombre: "Ridiculizado", capa: "exterior", categoria: "miedo" }, // Corregido el tipeo
   { nombre: "Irrespetado", capa: "exterior", categoria: "miedo" },
   { nombre: "Perturbado", capa: "exterior", categoria: "miedo" },
   { nombre: "Inadecuado", capa: "exterior", categoria: "miedo" },
@@ -26,14 +24,12 @@ const emocionesDB = [
   { nombre: "Aterrado", capa: "exterior", categoria: "miedo" },
   // Ira
   { nombre: "Ira", capa: "centro", categoria: "ira" },
-  //Medio
   { nombre: "Amenazado", capa: "medio", categoria: "ira" },
   { nombre: "Odioso", capa: "medio", categoria: "ira" },
   { nombre: "Desquiciado", capa: "medio", categoria: "ira" },
   { nombre: "Agresivo", capa: "medio", categoria: "ira" },
   { nombre: "Frustrado", capa: "medio", categoria: "ira" },
   { nombre: "Distante", capa: "medio", categoria: "ira" },
-  //Exterior
   { nombre: "Inseguro", capa: "exterior", categoria: "ira" },
   { nombre: "Celoso", capa: "exterior", categoria: "ira" },
   { nombre: "Resentido", capa: "exterior", categoria: "ira" },
@@ -44,18 +40,16 @@ const emocionesDB = [
   { nombre: "Hostil", capa: "exterior", categoria: "ira" },
   { nombre: "Enfadado", capa: "exterior", categoria: "ira" },
   { nombre: "Irritado", capa: "exterior", categoria: "ira" },
-  { nombre: "Retraido", capa: "exterior", categoria: "ira" },
+  { nombre: "Retraído", capa: "exterior", categoria: "ira" },
   { nombre: "Sospechoso", capa: "exterior", categoria: "ira" },
   // Tristeza
   { nombre: "Tristeza", capa: "centro", categoria: "tristeza" },
-  //medio
   { nombre: "Ansioso", capa: "medio", categoria: "tristeza" },
   { nombre: "Abandonado", capa: "medio", categoria: "tristeza" },
   { nombre: "Desesperado", capa: "medio", categoria: "tristeza" },
   { nombre: "Deprimido", capa: "medio", categoria: "tristeza" },
   { nombre: "Solitario", capa: "medio", categoria: "tristeza" },
   { nombre: "Aburrido", capa: "medio", categoria: "tristeza" },
-  //exterior
   { nombre: "Anhelante", capa: "exterior", categoria: "tristeza" },
   { nombre: "Abrumado", capa: "exterior", categoria: "tristeza" },
   { nombre: "Ignorado", capa: "exterior", categoria: "tristeza" },
@@ -63,21 +57,18 @@ const emocionesDB = [
   { nombre: "Impotente", capa: "exterior", categoria: "tristeza" },
   { nombre: "Vulnerable", capa: "exterior", categoria: "tristeza" },
   { nombre: "Inferior", capa: "exterior", categoria: "tristeza" },
-  { nombre: "Vacio", capa: "exterior", categoria: "tristeza" },
-  { nombre: "Abandonado", capa: "exterior", categoria: "tristeza" },
+  { nombre: "Vacío", capa: "exterior", categoria: "tristeza" },
   { nombre: "Apartado", capa: "exterior", categoria: "tristeza" },
   { nombre: "Apático", capa: "exterior", categoria: "tristeza" },
   { nombre: "Indiferente", capa: "exterior", categoria: "tristeza" },
   // Felicidad
   { nombre: "Felicidad", capa: "centro", categoria: "alegria" },
-  //medio
   { nombre: "Orgulloso", capa: "medio", categoria: "alegria" },
   { nombre: "Aceptado", capa: "medio", categoria: "alegria" },
   { nombre: "Poderoso", capa: "medio", categoria: "alegria" },
   { nombre: "Pacífico", capa: "medio", categoria: "alegria" },
   { nombre: "Íntimo", capa: "medio", categoria: "alegria" },
   { nombre: "Optimista", capa: "medio", categoria: "alegria" },
-  //exterior
   { nombre: "Importante", capa: "exterior", categoria: "alegria" },
   { nombre: "Confiado", capa: "exterior", categoria: "alegria" },
   { nombre: "Respetado", capa: "exterior", categoria: "alegria" },
@@ -90,16 +81,14 @@ const emocionesDB = [
   { nombre: "Juguetón", capa: "exterior", categoria: "alegria" },
   { nombre: "Receptivo", capa: "exterior", categoria: "alegria" },
   { nombre: "Inspirado", capa: "exterior", categoria: "alegria" },
-  //Disgusto
+  // Disgusto
   { nombre: "Disgusto", capa: "centro", categoria: "disgusto" },
-  //medio
   { nombre: "Crítico", capa: "medio", categoria: "disgusto" },
   { nombre: "Desaprobado", capa: "medio", categoria: "disgusto" },
   { nombre: "Decepcionado", capa: "medio", categoria: "disgusto" },
   { nombre: "Terrible", capa: "medio", categoria: "disgusto" },
   { nombre: "Evasivo", capa: "medio", categoria: "disgusto" },
   { nombre: "Culpable", capa: "medio", categoria: "disgusto" },
-  //exterior
   { nombre: "Sarcástico", capa: "exterior", categoria: "disgusto" },
   { nombre: "Escéptico", capa: "exterior", categoria: "disgusto" },
   { nombre: "Sentencioso", capa: "exterior", categoria: "disgusto" },
@@ -112,16 +101,14 @@ const emocionesDB = [
   { nombre: "Indeciso", capa: "exterior", categoria: "disgusto" },
   { nombre: "Atormentado", capa: "exterior", categoria: "disgusto" },
   { nombre: "Avergonzado", capa: "exterior", categoria: "disgusto" },
-  //Sorpresa
+  // Sorpresa
   { nombre: "Sorpresa", capa: "centro", categoria: "sorpresa" },
-  //medio
   { nombre: "Interesado", capa: "medio", categoria: "sorpresa" },
   { nombre: "Sorprendido", capa: "medio", categoria: "sorpresa" },
   { nombre: "Confundido", capa: "medio", categoria: "sorpresa" },
   { nombre: "Asombrado", capa: "medio", categoria: "sorpresa" },
   { nombre: "Efusivo", capa: "medio", categoria: "sorpresa" },
   { nombre: "Jubiloso", capa: "medio", categoria: "sorpresa" },
-  //exterior
   { nombre: "Entretenido", capa: "exterior", categoria: "sorpresa" },
   { nombre: "Curioso", capa: "exterior", categoria: "sorpresa" },
   { nombre: "Impresionado", capa: "exterior", categoria: "sorpresa" },
@@ -133,9 +120,10 @@ const emocionesDB = [
   { nombre: "Inquieto", capa: "exterior", categoria: "sorpresa" },
   { nombre: "Enérgico", capa: "exterior", categoria: "sorpresa" },
   { nombre: "Liberado", capa: "exterior", categoria: "sorpresa" },
-  { nombre: "Eufórico", capa: "exterior", categoria: "sorpresa" },
+  { nombre: "Eufórico", capa: "exterior", categoria: "sorpresa" }
 ];
 
+// Función para mezclar aleatoriamente el array (como un mazo de cartas)
 const mezclarArray = (array) => {
   let mezclado = [...array];
   for (let i = mezclado.length - 1; i > 0; i--) {
@@ -153,13 +141,14 @@ export default function App() {
   const [historial, setHistorial] = useState([]);
   const [mostrarAyuda, setMostrarAyuda] = useState(false);
   const [opcionesFase1, setOpcionesFase1] = useState([]);
-  // Cargar historial al iniciar
+
+  // Cargar historial al iniciar y barajar la primera vez
   useEffect(() => {
     const guardado = JSON.parse(localStorage.getItem('historialEmocional')) || [];
     setHistorial(guardado);
-    barajarEmociones(); // Llamamos a la función acá
+    barajarEmociones();
   }, []);
-  
+
   const barajarEmociones = () => {
     const exteriores = emocionesDB.filter(e => e.capa === "exterior");
     const mezcladas = mezclarArray(exteriores);
@@ -177,13 +166,11 @@ export default function App() {
   const avanzarFase2 = () => {
     if (seleccionadas.length === 0) return;
     
-    // Contar categorías elegidas
     const conteo = {};
     seleccionadas.forEach(e => {
       conteo[e.categoria] = (conteo[e.categoria] || 0) + 1;
     });
 
-    // Encontrar la(s) categoría(s) con más selecciones
     let maxVotos = 0;
     let ganadoras = [];
     for (const cat in conteo) {
@@ -196,7 +183,7 @@ export default function App() {
     }
 
     setCategoriasGanadoras(ganadoras);
-    setSeleccionadas([]); // Limpiar selección para la siguiente fase
+    setSeleccionadas([]);
     setFase(2);
   };
 
@@ -217,13 +204,11 @@ export default function App() {
       }
     }
 
-    // Buscar la emoción central correspondiente a la categoría ganadora
     const emocionCentral = emocionesDB.find(e => e.capa === "centro" && e.categoria === categoriaFinal);
     
     setVeredicto(emocionCentral);
     setFase(3);
 
-    // Guardar en LocalStorage
     const nuevoRegistro = {
       fecha: new Date().toLocaleString(),
       emocion: emocionCentral.nombre
@@ -238,68 +223,75 @@ export default function App() {
     setSeleccionadas([]);
     setVeredicto(null);
     setCategoriasGanadoras([]);
+    barajarEmociones();
   };
 
-  // Filtrar emociones según la fase
-  const emocionesMostrar = fase === 1 
-    ? emocionesDB.filter(e => e.capa === "exterior")
-    : emocionesDB.filter(e => e.capa === "medio" && categoriasGanadoras.includes(e.categoria));
+  const emocionesFase2 = emocionesDB.filter(e => e.capa === "medio" && categoriasGanadoras.includes(e.categoria));
+
+  // --- VARIABLES DE ESTILO UNIFICADAS (Tema Oscuro/Calmo) ---
+  const claseBotonEmocion = (emo) => {
+    const estaSeleccionada = seleccionadas.find(e => e.nombre === emo.nombre);
+    const base = "px-5 py-2.5 rounded-full border transition-all duration-300 shadow-sm font-medium hover:-translate-y-1";
+    
+    if (estaSeleccionada) {
+      // Estilo activo: Índigo suave con resplandor
+      return `${base} bg-indigo-500 text-white border-indigo-400 scale-105 shadow-lg ring-2 ring-indigo-400 ring-offset-2 ring-offset-slate-800`;
+    }
+    // Estilo inactivo: Fondo oscuro, borde sutil
+    return `${base} bg-slate-700 text-slate-200 border-slate-600 hover:bg-slate-600 hover:border-slate-400`;
+  };
+
+  const claseBotonAccion = "px-10 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-xl text-lg font-semibold disabled:opacity-50 hover:shadow-lg hover:scale-105 transition-all duration-300";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 text-gray-800 p-8 font-sans">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2 text-center">Registro Emocional</h1>
+    // Fondo general oscuro y relajante (Pizarra)
+    <div className="min-h-screen bg-slate-900 text-slate-200 p-4 sm:p-8 font-sans flex flex-col items-center">
+      <div className="max-w-2xl w-full">
         
-        {/* BOTÓN DE AYUDA */}
+        <h1 className="text-3xl font-bold mb-2 text-center text-slate-100">Registro Emocional</h1>
+        
         <div className="flex justify-center mb-8">
           <button 
             onClick={() => setMostrarAyuda(true)}
-            className="text-sm text-gray-500 underline hover:text-gray-800 transition-colors"
+            className="text-sm text-slate-400 underline hover:text-slate-200 transition-colors"
           >
             ¿Cómo funciona el embudo?
           </button>
         </div>
-        
+
         {/* CONTENEDOR PRINCIPAL */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-8">
+        <div className="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 mb-8">
           
           {fase === 1 && (
-            <div className="animate-fade-in">
-              <p className="mb-6 text-gray-600 text-center text-lg">¿Qué sensaciones identificás en este momento?</p>
+            <div className="animate-fade-in text-center">
+              <p className="mb-8 text-slate-300 text-lg">¿Qué sensaciones identificás en este momento?</p>
               
-              {/* Contenedor de las 12 cartas */}
-              <div className="flex flex-wrap gap-3 justify-center mb-6">
+              <div className="flex flex-wrap gap-4 justify-center mb-8">
                 {opcionesFase1.map(emo => (
                   <button
                     key={emo.nombre}
                     onClick={() => toggleEmocion(emo)}
-                    className={`px-5 py-2.5 rounded-full border transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 ${
-                      seleccionadas.find(e => e.nombre === emo.nombre)
-                        ? 'bg-gray-800 text-white border-gray-800 scale-105 ring-2 ring-gray-400 ring-offset-2'
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400'
-                    }`}
+                    className={claseBotonEmocion(emo)}
                   >
                     {emo.nombre}
                   </button>
                 ))}
               </div>
 
-              {/* Botón para cambiar las palabras */}
               <div className="flex justify-center mb-8">
                 <button 
                   onClick={barajarEmociones}
-                  className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-gray-700 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100"
+                  className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors px-4 py-2 rounded-lg hover:bg-slate-700/50"
                 >
                   ↻ No siento ninguna de estas (Ver otras)
                 </button>
               </div>
 
-              {/* Botón principal más dinámico */}
               <div className="flex justify-center">
                 <button 
                   onClick={avanzarFase2}
                   disabled={seleccionadas.length === 0}
-                  className="px-10 py-4 bg-gradient-to-r from-gray-900 to-gray-700 text-white rounded-xl text-lg font-semibold disabled:opacity-50 hover:shadow-xl hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+                  className={claseBotonAccion}
                 >
                   Siguiente paso
                 </button>
@@ -308,40 +300,42 @@ export default function App() {
           )}
 
           {fase === 2 && (
-            <div>
-              <p className="mb-4 text-gray-600 text-center">Profundicemos un poco más. De estas palabras, ¿cuáles resuenan más con lo que sentís?</p>
-              <div className="flex flex-wrap gap-3 justify-center mb-6">
-                {emocionesMostrar.map(emo => (
+            <div className="animate-fade-in text-center">
+              <p className="mb-8 text-slate-300 text-lg">Profundicemos un poco más. ¿Cuáles resuenan más con tu interior?</p>
+              
+              <div className="flex flex-wrap gap-4 justify-center mb-10">
+                {emocionesFase2.map(emo => (
                   <button
                     key={emo.nombre}
                     onClick={() => toggleEmocion(emo)}
-                    className={`px-4 py-2 rounded-full border transition-colors ${
-                      seleccionadas.find(e => e.nombre === emo.nombre)
-                        ? 'bg-gray-800 text-white border-gray-800'
-                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                    }`}
+                    className={claseBotonEmocion(emo)}
                   >
                     {emo.nombre}
                   </button>
                 ))}
               </div>
-              <button 
-                onClick={finalizarRegistro}
-                disabled={seleccionadas.length === 0}
-                className="w-full py-3 bg-gray-900 text-white rounded-lg disabled:opacity-50"
-              >
-                Descubrir Emoción
-              </button>
+
+              <div className="flex justify-center">
+                <button 
+                  onClick={finalizarRegistro}
+                  disabled={seleccionadas.length === 0}
+                  className={claseBotonAccion}
+                >
+                  Descubrir Emoción
+                </button>
+              </div>
             </div>
           )}
 
           {fase === 3 && veredicto && (
-            <div className="text-center">
-              <p className="text-gray-500 mb-2">Tu emoción predominante en este momento parece ser:</p>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">{veredicto.nombre}</h2>
+            <div className="text-center animate-fade-in py-6">
+              <p className="text-slate-400 mb-4 text-lg">Tu emoción predominante en este momento es:</p>
+              <h2 className="text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-10 pb-2">
+                {veredicto.nombre}
+              </h2>
               <button 
                 onClick={reiniciar}
-                className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-8 py-3 bg-slate-700 border border-slate-600 text-white rounded-xl text-lg font-semibold hover:bg-slate-600 hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 Registrar de nuevo
               </button>
@@ -350,16 +344,16 @@ export default function App() {
         </div>
 
         {/* HISTORIAL */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <h3 className="text-xl font-semibold mb-4">Tu Historial</h3>
+        <div className="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
+          <h3 className="text-xl font-semibold mb-6 text-slate-200">Tu Historial</h3>
           {historial.length === 0 ? (
-            <p className="text-gray-500 italic">Aún no hay registros.</p>
+            <p className="text-slate-500 italic text-center py-4">Aún no hay registros guardados.</p>
           ) : (
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {historial.map((reg, index) => (
-                <li key={index} className="flex justify-between border-b pb-2 text-sm">
-                  <span className="text-gray-500">{reg.fecha}</span>
-                  <span className="font-medium text-gray-900">{reg.emocion}</span>
+                <li key={index} className="flex justify-between items-center border-b border-slate-700 pb-3 text-sm">
+                  <span className="text-slate-400">{reg.fecha}</span>
+                  <span className="font-semibold text-slate-200 text-base">{reg.emocion}</span>
                 </li>
               ))}
             </ul>
@@ -367,40 +361,41 @@ export default function App() {
         </div>
 
       </div>
-      {/* VENTANA MODAL DE INSTRUCCIONES */}
-        {mostrarAyuda && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl relative">
-              <button 
-                onClick={() => setMostrarAyuda(false)}
-                className="absolute top-4 right-5 text-gray-400 hover:text-gray-800 font-bold text-2xl"
-              >
-                ×
-              </button>
-              
-              <h3 className="text-xl font-bold mb-4 text-gray-900">¿Cómo usar el registro?</h3>
-              
-              <div className="space-y-4 text-gray-600 text-sm">
-                <p>
-                  <strong className="text-gray-800">1. Superficie:</strong> Elegí todas las palabras con las que te identifiques en este momento. No lo pienses demasiado, dejate llevar.
-                </p>
-                <p>
-                  <strong className="text-gray-800">2. Profundidad:</strong> Según tus elecciones, el sistema filtrará sensaciones más específicas. Seleccioná las que más resuenen.
-                </p>
-                <p>
-                  <strong className="text-gray-800">3. Núcleo:</strong> Finalmente, descubriremos tu emoción central predominante para que puedas guardarla en tu historial.
-                </p>
-              </div>
 
-              <button 
-                onClick={() => setMostrarAyuda(false)}
-                className="mt-8 w-full py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
-              >
-                Entendido
-              </button>
+      {/* VENTANA MODAL DE INSTRUCCIONES */}
+      {mostrarAyuda && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl relative border border-slate-600">
+            <button 
+              onClick={() => setMostrarAyuda(false)}
+              className="absolute top-4 right-5 text-slate-400 hover:text-white font-bold text-2xl transition-colors"
+            >
+              ×
+            </button>
+            
+            <h3 className="text-xl font-bold mb-6 text-slate-100">¿Cómo usar el registro?</h3>
+            
+            <div className="space-y-4 text-slate-300 text-sm">
+              <p>
+                <strong className="text-indigo-400">1. Superficie:</strong> Elegí las palabras con las que te identifiques. No lo pienses demasiado, dejate llevar. Podés barajar las opciones si ninguna encaja.
+              </p>
+              <p>
+                <strong className="text-indigo-400">2. Profundidad:</strong> Según tus elecciones, el sistema filtrará sensaciones más específicas. Seleccioná las que más resuenen.
+              </p>
+              <p>
+                <strong className="text-indigo-400">3. Núcleo:</strong> Finalmente, descubriremos tu emoción central para que puedas guardarla en tu historial.
+              </p>
             </div>
+
+            <button 
+              onClick={() => setMostrarAyuda(false)}
+              className="mt-8 w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition-colors font-medium shadow-md"
+            >
+              Entendido
+            </button>
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 }
