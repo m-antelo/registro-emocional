@@ -124,41 +124,60 @@ const emocionesDB = [
 ];
 
 // Base de datos de consejos dinámicos por categoría
+// Base de datos de consejos dinámicos por categoría (Expandida)
 const consejosDB = {
   miedo: [
     "Intentá la respiración 4-7-8: Inhalá en 4 segundos, retené 7, exhalá en 8. Ayuda a bajar el ritmo cardíaco.",
     "Buscá un 'ancla' en el presente: nombrá 3 cosas que puedas ver, 2 que puedas tocar y 1 que puedas escuchar.",
     "Anotá qué es lo peor que podría pasar y al lado, qué harías en ese caso. Darle forma al miedo le quita poder.",
-    "Recordá que el miedo es solo tu mente intentando protegerte. Agradecele, pero recordale que estás a salvo ahora."
+    "Recordá que el miedo es solo tu mente intentando protegerte. Agradecele, pero recordale que estás a salvo ahora.",
+    "Visualizá un lugar que te transmita paz absoluta. Cerrá los ojos y tratá de imaginar los detalles, olores y sonidos de ese lugar.",
+    "Recordá una situación pasada donde sentiste mucho miedo y lograste superarlo. Tenés las herramientas para afrontar esto también.",
+    "Si el miedo te paraliza, enfocá tu atención en una tarea manual y repetitiva por 5 minutos, como ordenar algo pequeño."
   ],
   ira: [
     "Si sentís que explotás, alejate físicamente de la situación por 10 minutos. Caminar un poco ayuda a descargar.",
-    "Escribí todo lo que te da bronca en un papel sin filtro. Cuando termines, rompelo y tiralo.",
+    "Escribí todo lo que te da bronca en un papel sin filtro. Cuando termines, rompelo y tiralo a la basura.",
     "Lavate la cara con agua bien fría o agarrá un cubito de hielo. El cambio de temperatura resetea el sistema nervioso.",
-    "Canalizá esa energía: ordená un cajón, hacé unas flexiones o escuchá música fuerte por un rato."
+    "Canalizá esa energía: ordená un cajón, hacé unas flexiones o escuchá música fuerte por un rato.",
+    "Probá la técnica del 'tiempo fuera'. Avisá que necesitás unos minutos, salí del lugar y no vuelvas hasta que las pulsaciones bajen.",
+    "Escribí un mensaje o mail diciendo todo lo que pensás, pero NO lo envíes. Dejalo reposar hasta mañana.",
+    "Hacé un escaneo corporal rápido: ¿tenés los puños o la mandíbula apretados? Soltá la tensión muscular conscientemente."
   ],
   tristeza: [
     "Llorar está perfecto. Es el mecanismo natural del cuerpo para liberar las hormonas del estrés. Date permiso.",
-    "No te exijas estar bien hoy. Tratáte con la misma paciencia con la que tratarías a un amigo que está triste.",
+    "No te exijas estar bien hoy. Tratáte con la misma paciencia con la que tratarías a un amigo que está pasando un mal momento.",
     "Hacé algo mínimo que te reconforte: preparate un té rico, abrigate bien o mirá tu película confort favorita.",
-    "Escribir lo que sentís ayuda a sacarlo del cuerpo. A veces, la tristeza solo necesita ser escuchada."
+    "Escribir lo que sentís ayuda a sacarlo del cuerpo. A veces, la tristeza solo necesita ser escuchada.",
+    "No te aísles por completo. Mandale un mensajito a alguien de confianza; no hace falta hablar del tema, solo conectar.",
+    "Establecé una meta minúscula para hoy: bañarte, hacer la cama o dar una vuelta a la manzana. Celebrá ese pequeño logro.",
+    "Recordá que las emociones son como olas: suben, llegan a un pico y después bajan. Esta tristeza no es un estado permanente."
   ],
   alegria: [
     "¡Qué bueno! Frená un segundo y registrá en qué parte del cuerpo sentís esta alegría. Guardá esa sensación.",
     "Compartí esto con alguien. Mandale un mensaje a esa persona que sabés que se va a poner feliz por vos.",
     "Usá esta energía a tu favor: es un gran momento para arrancar ese proyecto o tarea que venías pateando.",
-    "No sientas culpa por estar bien. Te merecés disfrutar este momento al cien por ciento."
+    "No sientas culpa por estar bien. Te merecés disfrutar este momento al cien por ciento.",
+    "Escribí 3 cosas por las que estás agradecido hoy. La gratitud potencia y alarga la sensación de bienestar.",
+    "Hacé algo lindo por otra persona. Compartir la alegría o ayudar a alguien más multiplica la emoción.",
+    "Sacá una foto mental de este momento. ¿Qué estás haciendo? ¿Con quién estás? Guardalo como recurso para los días grises."
   ],
   disgusto: [
     "El disgusto suele marcar un límite que fue cruzado. Identificá cuál fue ese límite para poder comunicarlo después.",
-    "Tomá distancia de lo que te genera rechazo. Está bien proteger tu espacio y tu energía.",
+    "Tomá distancia de lo que te genera rechazo. Está bien proteger tu espacio y tu energía vital.",
     "Si es una situación inevitable, intentá enfocarte en qué podés controlar vos y soltá lo que hace el otro.",
-    "Escribí por qué te sentís así. Ponerlo en palabras ayuda a entender si es un tema de valores o de incomodidad."
+    "Escribí por qué te sentís así. Ponerlo en palabras ayuda a entender si es un tema de valores profundos o de incomodidad pasajera.",
+    "Preguntate: ¿esto choca con mis valores fundamentales? Entender la raíz del rechazo te ayuda a procesarlo más rápido.",
+    "Si algo te genera rechazo constante, empezá a armar un plan para poner límites claros o reducir tu exposición a esa situación.",
+    "Cambiá el foco: si estás en un ambiente que te desagrada, buscá mentalmente tres cosas neutrales o positivas a tu alrededor."
   ],
   sorpresa: [
     "Date un momento para procesar la nueva información. No tenés que reaccionar ni tomar decisiones ya mismo.",
     "Respirá hondo. La sorpresa descoloca, dale a tu cerebro unos minutos para acomodarse a la nueva realidad.",
-    "Si la sorpresa desbarató tus planes, enfocate en recalcular el próximo paso, no en mirar el mapa entero."
+    "Si la sorpresa desbarató tus planes, enfocate en recalcular el próximo paso inmediato, no en mirar el mapa entero.",
+    "Transformá la sorpresa en curiosidad. Preguntate: '¿qué puedo aprender de esta situación inesperada?'",
+    "No saques conclusiones apresuradas. La sorpresa genera incertidumbre; dale tiempo a tu mente para recolectar más información.",
+    "Aceptá que no podemos controlarlo todo. La flexibilidad mental es tu mejor herramienta frente a los cambios repentinos."
   ]
 };
 
