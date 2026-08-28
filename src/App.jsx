@@ -455,12 +455,12 @@ export default function App() {
         </div>
         {/* BOTÓN FLOTANTE DE SUGERENCIAS */}
         <a
-        href="https://docs.google.com/forms/d/e/1FAIpQLSfP7eura5hSTHudehLmAToAADDP2RbozZXcg6vgPDdDBL6oIg/viewform?usp=header"
+        href="https://forms.gle/TULINKACA"
         target="_blank"
         rel="noopener noreferrer"
-        className={`fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full shadow-lg transition-all duration-300 hover:scale-105 font-medium text-sm ${
+        className={`absolute top-4 left-4 sm:top-8 sm:left-8 z-40 flex items-center gap-2 px-4 py-3 rounded-full shadow-md transition-all duration-300 hover:scale-105 font-medium text-sm ${
           temaClaro 
-            ? 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-50 shadow-purple-200/50' 
+            ? 'bg-slate-100/80 text-slate-700 border border-white hover:bg-white shadow-purple-200/50' 
             : 'bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 shadow-black/40'
         }`}
         title="Dejar una sugerencia"
