@@ -14,7 +14,7 @@ const emocionesDB = [
   //exterior
   { nombre: "Apenado", capa: "exterior", categoria: "miedo" },
   { nombre: "Devastado", capa: "exterior", categoria: "miedo" },
-  { nombre: "Ridiculizado", capa: "exterior", categoria: "miedo" },
+  { nombre: "Rdiculizado", capa: "exterior", categoria: "miedo" },
   { nombre: "Irrespetado", capa: "exterior", categoria: "miedo" },
   { nombre: "Perturbado", capa: "exterior", categoria: "miedo" },
   { nombre: "Inadecuado", capa: "exterior", categoria: "miedo" },
@@ -142,7 +142,7 @@ export default function App() {
   const [categoriasGanadoras, setCategoriasGanadoras] = useState([]);
   const [veredicto, setVeredicto] = useState(null);
   const [historial, setHistorial] = useState([]);
-
+  const [mostrarAyuda, setMostrarAyuda] = useState(false);
   // Cargar historial al iniciar
   useEffect(() => {
     const guardado = JSON.parse(localStorage.getItem('historialEmocional')) || [];
@@ -231,8 +231,18 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 p-8 font-sans">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-center">Registro Emocional</h1>
-
+        <h1 className="text-3xl font-bold mb-2 text-center">Registro Emocional</h1>
+        
+        {/* BOTÓN DE AYUDA */}
+        <div className="flex justify-center mb-8">
+          <button 
+            onClick={() => setMostrarAyuda(true)}
+            className="text-sm text-gray-500 underline hover:text-gray-800 transition-colors"
+          >
+            ¿Cómo funciona el embudo?
+          </button>
+        </div>
+        
         {/* CONTENEDOR PRINCIPAL */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-8">
           
@@ -324,6 +334,40 @@ export default function App() {
         </div>
 
       </div>
+      {/* VENTANA MODAL DE INSTRUCCIONES */}
+        {mostrarAyuda && (
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl relative">
+              <button 
+                onClick={() => setMostrarAyuda(false)}
+                className="absolute top-4 right-5 text-gray-400 hover:text-gray-800 font-bold text-2xl"
+              >
+                ×
+              </button>
+              
+              <h3 className="text-xl font-bold mb-4 text-gray-900">¿Cómo usar el registro?</h3>
+              
+              <div className="space-y-4 text-gray-600 text-sm">
+                <p>
+                  <strong className="text-gray-800">1. Superficie:</strong> Elegí todas las palabras con las que te identifiques en este momento. No lo pienses demasiado, dejate llevar.
+                </p>
+                <p>
+                  <strong className="text-gray-800">2. Profundidad:</strong> Según tus elecciones, el sistema filtrará sensaciones más específicas. Seleccioná las que más resuenen.
+                </p>
+                <p>
+                  <strong className="text-gray-800">3. Núcleo:</strong> Finalmente, descubriremos tu emoción central predominante para que puedas guardarla en tu historial.
+                </p>
+              </div>
+
+              <button 
+                onClick={() => setMostrarAyuda(false)}
+                className="mt-8 w-full py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+              >
+                Entendido
+              </button>
+            </div>
+          </div>
+        )}
     </div>
   );
 }
