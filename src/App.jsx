@@ -455,7 +455,7 @@ export default function App() {
         </div>
         {/* BOTÓN FLOTANTE DE SUGERENCIAS */}
         <a
-        href="https://forms.gle/TULINKACA"
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfP7eura5hSTHudehLmAToAADDP2RbozZXcg6vgPDdDBL6oIg/viewform?usp=header"
         target="_blank"
         rel="noopener noreferrer"
         className={`absolute top-4 left-4 sm:top-8 sm:left-8 z-40 flex items-center gap-2 px-4 py-3 rounded-full shadow-md transition-all duration-300 hover:scale-105 font-medium text-sm ${
